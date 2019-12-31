@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,29 @@ namespace WiredBrainCoffee.ShopInfoTool
                     foreach (var coffeeShop in coffeeShops)
                     {
                         Console.WriteLine($"> " + coffeeShop.Location);
+                    }
+                }
+                else
+                {
+                    var foundCoffeeShops = coffeeShops.Where(x => x.Location.StartsWith(line, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                    if (foundCoffeeShops.Count == 0)            
+                    {
+                        Console.WriteLine($"> Command '{line}' not found");
+                    }
+                    else if (foundCoffeeShops.Count == 1)
+                    {
+                        var coffeeShop = foundCoffeeShops.Single();
+                        Console.WriteLine($"> Location: {coffeeShop.Location}");
+                        Console.WriteLine($"> Beans in stock: {coffeeShop.BeansStockInKg} kg");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"> Multiple matching coffee shop commands found: ");
+                        foreach (var coffeeType in foundCoffeeShops)
+                        {
+                            Console.WriteLine($"> {coffeeType.Location}");
+                        }
                     }
                 }
             }
